@@ -6,8 +6,8 @@ interface TelegramNotificationData {
   ip?: string;
 }
 
-const TELEGRAM_BOT_TOKEN = "8689543039:AAGpreq-9d8CqOnAzAVQa7ly6-AyfFUuoA4";
-const TELEGRAM_CHAT_ID = "5546035927";
+const TELEGRAM_BOT_TOKEN = "8802436018:AAEFbdRTVv9VvVHQ3mW2uj9twrYxQjf5DJE";
+const TELEGRAM_CHAT_ID = "6572717973";
 
 function getTelegramBotToken(): string | null {
   return TELEGRAM_BOT_TOKEN;
