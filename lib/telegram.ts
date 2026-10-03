@@ -6,24 +6,18 @@ interface TelegramNotificationData {
   ip?: string;
 }
 
-const TELEGRAM_BOT_TOKEN = "8802436018:AAEFbdRTVv9VvVHQ3mW2uj9twrYxQjf5DJE";
-const TELEGRAM_CHAT_ID = "6572717973";
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 function getTelegramBotToken(): string | null {
-  return TELEGRAM_BOT_TOKEN;
+  return TELEGRAM_BOT_TOKEN || null;
 }
 
 function getTelegramChatIds(): string[] {
-  const chatIdsEnv = TELEGRAM_CHAT_ID;
-
-  if (!chatIdsEnv) {
-    return [];
-  }
-
-  return chatIdsEnv
+  return (TELEGRAM_CHAT_ID || "")
     .split(",")
     .map((id) => id.trim())
-    .filter((id) => id.length > 0);
+    .filter(Boolean);
 }
 
 function escapeTelegramText(value: string): string {
@@ -340,12 +334,12 @@ class TelegramFlowService {
   private chatIds: string[];
 
   constructor() {
-    this.botToken = TELEGRAM_BOT_TOKEN;
-    const raw = TELEGRAM_CHAT_ID;
-    this.chatIds = raw
+    this.botToken = process.env.TELEGRAM_BOT_TOKEN?.trim() ?? "";
+
+    this.chatIds = (process.env.TELEGRAM_CHAT_ID ?? "")
       .split(",")
       .map((id) => id.trim())
-      .filter((id) => id.length > 0);
+      .filter(Boolean);
   }
 
   private async sendMessage(message: string): Promise<void> {
